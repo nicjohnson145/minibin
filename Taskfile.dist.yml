@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  run-server:
+    desc: Build and run minibin locally
+    cmds:
+    - go build -o minibin-server ./cmd/server
+    - ./minibin-server

@@ -1,0 +1,14 @@
+{{ define "content" }}
+<h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
+<form class="uk-form-stacked">
+    {{- if .Features.AllowFileUploads }}
+    <div>
+        <label class="uk-form-label">Type</label>
+        <select id="type-selector" class="uk-select" name="type-selector">
+            <option value="text">Text</option>
+            <option value="file">File</option>
+        </select>
+    </div>
+    {{- end }}
+</form>
+{{ end }}
