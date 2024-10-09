@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package minibin;
+
+enum PastaType {
+  PASTA_TYPE_UNSPECIFIED = 0;
+  PASTA_TYPE_TEXT = 1;
+  PASTA_TYPE_FILE = 2;
+}
+
+
+message Pasta {
+  PastaType type = 1;
+  optional string content = 2;
+  optional string file_name = 3;
+  optional bytes file_content = 4;
+}

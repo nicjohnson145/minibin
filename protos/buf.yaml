@@ -1,0 +1,10 @@
+version: v1
+breaking:
+  use:
+    - FILE
+lint:
+  use:
+    - DEFAULT
+deps:
+- buf.build/protocolbuffers/wellknowntypes:v26.0
+- buf.build/googleapis/googleapis:7a6bc1e3207144b38e9066861e1de0ff

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package minibin;
+
+import "struct.proto";
+import "google/api/annotations.proto";
+
+enum PastaVisibility {
+  PASTA_VISIBILITY_UNSPECIFIED = 0;
+  PASTA_VISIBILITY_PUBLIC = 1;
+  PASTA_VISIBILITY_UNLISTED = 2;
+}
+
+message UploadRequest {
+  Pasta pasta = 1;
+  optional string password = 2;
+}
+
+message UploadResponse {
+
+}
+
+service MinibinService {
+  rpc Upload(UploadRequest) returns (UploadResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/Upload"
+      body: "*"
+    };
+  };
+}

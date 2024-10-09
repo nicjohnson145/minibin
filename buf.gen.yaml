@@ -1,0 +1,19 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/nicjohnson145/protobuf
+    except:
+    - buf.build/googleapis/googleapis
+plugins:
+  - plugin: buf.build/grpc/go:v1.2.0
+    out: protobuf
+    opt: paths=source_relative
+  - plugin: buf.build/protocolbuffers/go:v1.28.1
+    out: protobuf
+    opt: paths=source_relative
+  - plugin: buf.build/grpc-ecosystem/gateway:v2.19.1
+    out: protobuf
+    opt:
+    - paths=source_relative
+
