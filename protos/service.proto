@@ -14,6 +14,7 @@ enum PastaVisibility {
 message UploadRequest {
   Pasta pasta = 1;
   optional string password = 2;
+  optional string upload_password = 3;
 }
 
 message UploadResponse {

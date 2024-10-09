@@ -2,14 +2,19 @@ package server
 
 import (
 	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"io/fs"
 	"net/http"
 	"path/filepath"
 
 	"github.com/nicjohnson145/minibin/config"
-	"github.com/rs/zerolog"
 	pb "github.com/nicjohnson145/minibin/protobuf"
+	"github.com/rs/zerolog"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type ServerConfig struct {
@@ -67,4 +72,27 @@ func (s *Server) Home() http.HandlerFunc {
 		w.WriteHeader(http.StatusOK)
 		w.Write(buf.Bytes())
 	}
+}
+
+func MarshallDebug(x any) {
+	var outBytes []byte
+	var err error
+	if protoMsg, ok := x.(protoreflect.ProtoMessage); ok {
+		opts := protojson.MarshalOptions{
+			Indent: "    ",
+		}
+		outBytes, err = opts.Marshal(protoMsg)
+	} else {
+		outBytes, err = json.MarshalIndent(x, "", "   ")
+	}
+	if err != nil {
+		fmt.Printf("Unable to marshall object for debugging: %v\n", err)
+		panic("unable to marshall")
+	}
+	fmt.Println("\n" + string(outBytes))
+}
+
+func (s *Server) Upload(ctx context.Context, req *pb.UploadRequest) (*pb.UploadResponse, error) {
+	MarshallDebug(req)
+	return &pb.UploadResponse{}, nil
 }

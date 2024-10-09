@@ -79,9 +79,41 @@
             postForm(e) {
                 e.preventDefault();
 
-                console.log(this.fileContent);
-                console.log(this.type);
-                console.log(this.password);
+                let payload = {
+                    pasta: {},
+                };
+
+                switch (this.type) {
+                    case "text":
+                        payload.pasta.type = "PASTA_TYPE_TEXT"
+                        payload.pasta.content = this.content
+                        break
+                    case "file":
+                        payload.pasta.type = "PASTA_TYPE_FILE"
+                        payload.pasta.file_name = this.fileName
+                        payload.pasta.file_content = this.fileContent
+                        break
+                }
+
+                if (this.password != "") {
+                    payload.password = this.password
+                }
+
+                let payloadJSON = JSON.stringify(payload);
+                console.log(payloadJSON)
+
+                fetch(
+                    "/api/v1/Upload",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: payloadJSON,
+                    },
+                ).then((response) => {
+                    console.log(JSON.stringify(response.json()))
+                })
             },
         }));
     })
