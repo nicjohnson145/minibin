@@ -9,6 +9,7 @@ import (
 
 	"github.com/nicjohnson145/minibin/config"
 	"github.com/rs/zerolog"
+	pb "github.com/nicjohnson145/minibin/protobuf"
 )
 
 type ServerConfig struct {
@@ -26,6 +27,8 @@ func NewServer(conf ServerConfig) *Server {
 }
 
 type Server struct {
+	pb.UnimplementedMinibinServiceServer
+
 	log        zerolog.Logger
 	templateFS fs.FS
 	featureSet *config.FeatureSet

@@ -14,7 +14,8 @@ const (
 	FeatureAllowFileUploads       = "feature.allow_file_uploads"
 	FeaturePasswordProtectUploads = "feature.password_protect_uploads"
 
-	Port = "port"
+	GrpcPort = "grpc_port"
+	HttpPort = "http_port"
 )
 
 const (
@@ -25,14 +26,17 @@ const (
 	DefaultFeatureAllowFileUploads       = true
 	DefaultFeaturePasswordProtectUploads = false
 
-	DefaultPort = "3050"
+	DefaultGrpcPort = "9090"
+	DefaultHttpPort = "3050"
 )
 
 func InitializeServerConfig() {
 	viper.SetDefault(LogDebug, DefaultLogDebug)
 	viper.SetDefault(LogTrace, DefaultLogTrace)
 	viper.SetDefault(LogJson, DefaultLogJson)
-	viper.SetDefault(Port, DefaultPort)
+
+	viper.SetDefault(GrpcPort, DefaultGrpcPort)
+	viper.SetDefault(HttpPort, DefaultHttpPort)
 
 	viper.SetDefault(FeatureAllowFileUploads, DefaultFeatureAllowFileUploads)
 	viper.SetDefault(FeaturePasswordProtectUploads, DefaultFeaturePasswordProtectUploads)
