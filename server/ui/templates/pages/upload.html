@@ -1,14 +1,91 @@
 {{ define "content" }}
-<h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message"></h1>
-<form class="uk-form-stacked">
-    {{- if .Features.AllowFileUploads }}
-    <div>
-        <label class="uk-form-label">Type</label>
-        <select id="type-selector" class="uk-select" name="type-selector">
-            <option value="text">Text</option>
-            <option value="file">File</option>
-        </select>
+
+<form id="main-form" class="uk-form-stacked">
+    <div x-data="formdata">
+        {{- if .Features.AllowFileUploads }}
+        <div class="uk-margin-small">
+            <label class="uk-form-label">Type</label>
+            <select id="type-selector" class="uk-select" name="type-selector" x-model="type">
+                <option value="file">File</option>
+                <option value="text">Text</option>
+            </select>
+        </div>
+        {{- end }}
+        <div class="uk-margin-small">
+            <label class="uk-form-label">Password</label>
+            <input class="uk-input" type="password" x-model="password">
+        </div>
+        <div class="uk-margin-small">
+            <label class="uk-form-label">Visibility</label>
+            <select id="type-selector" class="uk-select" name="type-selector" x-model="visibility">
+                <option value="public">Public</option>
+                <option value="unlisted">Unlisted</option>
+            </select>
+        </div>
+        <div class="uk-margin-small" x-show="type == 'text'">
+            <label class="uk-form-label">Content</label>
+            <textarea class="uk-textarea" rows="15" x-model="content"></textarea>
+        </div>
+        <div class="js-upload uk-placeholder uk-text-center" x-show="type == 'file'">
+            <div x-show="fileName != ''">
+
+            </div>
+            <span x-text="fileAreaSpanText()" class="uk-text-middle"></span>
+            <div uk-form-custom>
+                <input id="file-upload" type="file" x-on:change="fileChange">
+                <span x-text="fileInputSpanText()" class="uk-link"></span>
+            </div>
+        </div>
+        <button class="uk-button uk-button-primary uk-align-right" @click="postForm">Post</button>
     </div>
-    {{- end }}
 </form>
+
+<script>
+    document.getElementById("main-form").onsubmit = async function(event) {
+        event.preventDefault();
+    };
+
+    document.addEventListener('alpine:init', () => {
+        document.getElementById("")
+        Alpine.data('formdata', () => ({
+            type: "text",
+            password: "",
+            visibility: "public",
+            content: "",
+            fileContent: null,
+            fileName: "",
+            fileAreaSpanText() {
+                if (this.fileName == "") {
+                    return "Drop a file here or"
+                }
+                return this.fileName
+            },
+            fileInputSpanText() {
+                if (this.fileName == "") {
+                    return "select one"
+                }
+                return "(select something else)"
+            },
+            fileChange(_) {
+                const file = document.getElementById("file-upload").files[0]
+                this.fileName = file.name;
+
+                const reader = new FileReader();
+                reader.addEventListener("load", () => {
+                    this.fileContent = new Uint8Array(reader.result);
+                }, false);
+                reader.readAsArrayBuffer(file);
+            },
+            postForm(e) {
+                e.preventDefault();
+
+                console.log(this.fileContent);
+                console.log(this.type);
+                console.log(this.password);
+            },
+        }));
+    })
+</script>
+
+
 {{ end }}

@@ -6,3 +6,7 @@ tasks:
     cmds:
     - go build -o minibin-server ./cmd/server
     - ./minibin-server
+  watch:
+    desc: Use air to rebuild on file changes
+    cmds:
+    - air --build.cmd "go build -o minibin-server ./cmd/server" --build.bin "./minibin-server"
